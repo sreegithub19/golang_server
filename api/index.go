@@ -1,40 +1,32 @@
-// // running at : http://127.0.0.1:8080/
-
-// package main
-
-// import (
-// 	"fmt"
-// 	"log"
-// 	"net/http"
-// )
-
-// func main() {
-// 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-// 		fmt.Fprintf(w, `
-// 		<h1>Hello</h1>
-// 		<a href="/hello2">go to hello2</a>
-// 		`)
-// 	})
-// 	http.HandleFunc("/hello2", func(w http.ResponseWriter, r *http.Request) {
-// 		fmt.Fprintf(w, "<h1>Hello</h1>!")
-// 	})
-// 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-// 		fmt.Fprintf(w, "<h1>Hello /</h1>")
-// 	})
-
-// 	fmt.Printf("Starting server at port 8080\n")
-// 	if err := http.ListenAndServe(":8080", nil); err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
-
-package handler
+package main
 
 import (
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
+func getRoot(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("got / request\n")
+	io.WriteString(w, "This is my website!\n")
+}
+func getHello(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("got /hello request\n")
+	io.WriteString(w, "Hello, HTTP!\n")
+}
+
+func main() {
+
+	http.HandleFunc("/", getRoot)
+	http.HandleFunc("/hello", getHello)
+
+	err := http.ListenAndServe(":3333", nil)
+	if errors.Is(err, http.ErrServerClosed) {
+		fmt.Printf("server closed\n")
+	} else if err != nil {
+		fmt.Printf("error starting server: %s\n", err)
+		os.Exit(1)
+	}
 }

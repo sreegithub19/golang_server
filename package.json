@@ -1,0 +1,15 @@
+{
+  "name": "vercel-python-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "devDependencies": {
+    "vercel": "^28.9.0"
+  },
+  "repository": "https://github.com/sreegithub19/golang_server.git",
+  "author": "<sreedhar.k@rakuten.com>"
+}
